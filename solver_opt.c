@@ -56,7 +56,7 @@ double *multiply_matrix(int N, double *A, double *B) {
 	int i, j, k, ib, jb, kb;
 	int BS = 40; // block size
 	register double sum;
-	// double *pa, *pb;
+	register double *pa, *pb;
 	double *aux = init_aux(N);
 	if (!aux) return NULL;
 
@@ -64,11 +64,33 @@ double *multiply_matrix(int N, double *A, double *B) {
 		for (j = 0; j < N; j += BS) {
 			for (k = 0; k < N; k += BS) {
 				for (ib = 0; ib < BS; ib++) {
+					pa = &A[ib * N];
 					for (kb = 0; kb < BS; kb++) {
 						sum = 0;
-						for (jb = 0; jb < BS; jb++) {
-							sum += A[ib * N + kb] * B[kb * N + jb];
+						pb = &B[kb * N];
+						for (jb = 0; jb < BS; jb += 10) {
+							sum += *pa * *pb;
+							pb++;
+							sum += *pa * *pb;
+							pb++;
+							sum += *pa * *pb;
+							pb++;
+							sum += *pa * *pb;
+							pb++;
+							sum += *pa * *pb;
+							pb++;
+							sum += *pa * *pb;
+							pb++;
+							sum += *pa * *pb;
+							pb++;
+							sum += *pa * *pb;
+							pb++;
+							sum += *pa * *pb;
+							pb++;
+							sum += *pa * *pb;
+							pb++;
 						}
+						pa++;
 						aux[ib * N + jb] = sum;
 					}
 				}
