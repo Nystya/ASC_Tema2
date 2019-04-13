@@ -93,14 +93,14 @@ void zerotr_matrix(int N, double *A) {
 	}
 }
 
-void print_matrix(int N, double *A) {
-	for (int i = 0; i < N; i++) {
-		for (int j = 0; j < N; j++) {
-			printf("%lf ", A[i * N + j]);
-		}
-		printf("\n");
-	}
-}
+// void print_matrix(int N, double *A) {
+// 	for (int i = 0; i < N; i++) {
+// 		for (int j = 0; j < N; j++) {
+// 			printf("%lf ", A[i * N + j]);
+// 		}
+// 		printf("\n");
+// 	}
+// }
 
 /*
  * Add your unoptimized implementation here
@@ -126,7 +126,7 @@ double *my_solver(int N, double *A, double* B) {
 	free(BTA);
 	free(ATBPBTA);
 	
-	print_matrix(N, C);
-	
+	// print_matrix(N, C);
+
 	return C;
 }
