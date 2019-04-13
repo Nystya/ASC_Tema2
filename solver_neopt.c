@@ -86,10 +86,19 @@ void zerotr_matrix(int N, double *A) {
 
 	for (i = 0; i < N; i++) {
 		for (j = 0; j < N; j++) {
-			if (j > i) {
+			if (j < i) {
 				A[i * N + j] = 0;
 			}
 		}
+	}
+}
+
+void print_matrix(int N, double *A) {
+	for (int i = 0; i < N; i++) {
+		for (int j = 0; j < N; j++) {
+			printf("%lf ", A[i * N + j]);
+		}
+		printf("\n");
 	}
 }
 
@@ -116,6 +125,8 @@ double *my_solver(int N, double *A, double* B) {
 	free(ATB);
 	free(BTA);
 	free(ATBPBTA);
+	
+	print_matrix(N, C);
 	
 	return C;
 }

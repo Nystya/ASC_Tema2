@@ -55,43 +55,53 @@ double *transpose_matrix(int N, double *A) {
 double *multiply_matrix(int N, double *A, double *B) {
 	int i, j, k, ib, jb, kb;
 	int BS = 40; // block size
-	register double sum;
-	register double *pa, *pb;
+	register double *pa, *pb, *paux;
+	register double *oldpaux;
 	double *aux = init_aux(N);
 	if (!aux) return NULL;
 
 	for (i = 0; i < N; i += BS) {
 		for (j = 0; j < N; j += BS) {
 			for (k = 0; k < N; k += BS) {
-				for (ib = 0; ib < BS; ib++) {
-					pa = &A[ib * N];
-					for (kb = 0; kb < BS; kb++) {
-						sum = 0;
-						pb = &B[kb * N];
-						for (jb = 0; jb < BS; jb += 10) {
-							sum += *pa * *pb;
+				for (ib = i; ib < i + BS; ib++) {
+					pa = &A[ib * N + k];
+					oldpaux = &aux[ib * N + j];
+					for (kb = k; kb < k + BS; kb++) {
+						pb = &B[kb * N + j];
+						paux = oldpaux;
+						for (jb = j; jb < j + BS; jb += 10) {
+							*paux += *pa * *pb;
 							pb++;
-							sum += *pa * *pb;
+							paux++;
+							*paux += *pa * *pb;
 							pb++;
-							sum += *pa * *pb;
+							paux++;
+							*paux += *pa * *pb;
 							pb++;
-							sum += *pa * *pb;
+							paux++;
+							*paux += *pa * *pb;
 							pb++;
-							sum += *pa * *pb;
+							paux++;
+							*paux += *pa * *pb;
 							pb++;
-							sum += *pa * *pb;
+							paux++;
+							*paux += *pa * *pb;
 							pb++;
-							sum += *pa * *pb;
+							paux++;
+							*paux += *pa * *pb;
 							pb++;
-							sum += *pa * *pb;
+							paux++;
+							*paux += *pa * *pb;
 							pb++;
-							sum += *pa * *pb;
+							paux++;
+							*paux += *pa * *pb;
 							pb++;
-							sum += *pa * *pb;
+							paux++;
+							*paux += *pa * *pb;
 							pb++;
+							paux++;
 						}
 						pa++;
-						aux[ib * N + jb] = sum;
 					}
 				}
 			}
@@ -102,39 +112,30 @@ double *multiply_matrix(int N, double *A, double *B) {
 }
 
 double *power_matrix(int N, double *A) {
-	int i, j, k, ib, jb, kb;
-	int BS = 40; // block size
-	register double sum;
-	double *pa;
+	int i, j, k;
+	register double *oldpaux;
+	register double *pa, *pb, *paux;
 	double *aux = init_aux(N);
 	if (!aux) return NULL;
 	
 	for (i = 1; i < N; i++) {
-		pa = &aux[i * N];
 		for (j = 0; j < i; j++) {
-			*pa = 0;
-			pa++;
+			aux[i * N + j] = 0;
 		}
 	}
 
 	for (i = 0; i < N; i++) {
-		sum = A[i * N + i];
-		aux[i * N + i] = sum * sum;
-	}
-
-	for (i = 0; i < N; i += BS) {
-		for (j = 0; j < N; j += BS) {
-			for (k = 0; k < N; k += BS) {
-				for (ib = 0; ib < BS; ib++) {
-					for (jb = i + 1; jb < BS; jb++) {
-						sum = 0;
-						for (kb = 0; kb < j + 1; kb++) {
-							sum += A[ib * N + kb] * A[kb * N + jb];
-						}
-						aux[ib * N + jb] = sum;
-					}
-				}
+		pa = &A[i * N];
+		oldpaux = &aux[i * N + i];
+		for (k = 0; k < j + 1; k++) {
+			pb = &A[k * N + i];
+			paux = oldpaux;
+			for (j = i; j < N; j++) {
+				*paux += *pa * *pb;
+				pb++;
+				paux++;
 			}
+			pa++;
 		}
 	}
 
@@ -161,10 +162,19 @@ void zerotr_matrix(int N, double *A) {
 
 	for (i = 0; i < N; i++) {
 		for (j = 0; j < N; j++) {
-			if (j > i) {
+			if (j < i) {
 				A[i * N + j] = 0;
 			}
 		}
+	}
+}
+
+void print_matrix(int N, double *A) {
+	for (int i = 0; i < N; i++) {
+		for (int j = 0; j < N; j++) {
+			printf("%lf ", A[i * N + j]);
+		}
+		printf("\n");
 	}
 }
 
@@ -172,10 +182,9 @@ void zerotr_matrix(int N, double *A) {
  * Add your BLAS implementation here
  */
 double *my_solver(int N, double *A, double *B) {
-	printf("NEOPT SOLVER\n");
+	printf("OPT SOLVER\n");
 
 	double *AT = transpose_matrix(N, A);
-	double *BT = transpose_matrix(N, B);
 
 	double *ATB = multiply_matrix(N, AT, B);
 	double *BTA = transpose_matrix(N, ATB);
@@ -187,10 +196,9 @@ double *my_solver(int N, double *A, double *B) {
 	double *C = power_matrix(N, ATBPBTA);
 
 	free(AT);
-	free(BT);
 	free(ATB);
 	free(BTA);
 	free(ATBPBTA);
-	
+
 	return C;
 }

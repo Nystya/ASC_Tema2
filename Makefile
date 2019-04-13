@@ -22,4 +22,4 @@ tema2_opt_f: solver_neopt.c main.c
 	$(CC) $(OTHER_C_FLAGS) $^ -o $@
 
 clean:
-	rm -rf tema2_blas tema2_neopt tema2_opt_m tema2_opt_f transpose_benchmark
+	rm -rf tema2_blas tema2_neopt tema2_opt_m tema2_opt_f transpose_benchmark out1 out2 out3
