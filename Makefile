@@ -1,8 +1,8 @@
 CC=gcc
 CFLAGS=-Wall -Werror -O0
 OTHER_C_FLAGS=-Wall -Werror -O3
-LIBDIRS=/CBLAS/lib/
-LIBS=cblas_LINUX
+LIBDIRS=-L/usr/lib64/atlas
+LIBS=-lsatlas
 
 all: tema2_neopt tema2_opt_m tema2_opt_f transpose_benchmark
 
