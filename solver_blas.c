@@ -49,7 +49,11 @@ double *multiply_matrix(int N, double *A, double *B) {
 }
 
 void power_matrix(int N, double *A) {
+	double *aux = init_aux(N);
 	cblas_dtrmm(CblasRowMajor, 'L', 'U', 'N', 'N', N, N, 1, A, N, A, N);
+	
+	memcpy(aux, B, N * N * sizeof(double));
+	return aux;
 }
 
 double *add_matrix(int N, double *A, double *B) {
