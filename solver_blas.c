@@ -4,7 +4,7 @@
  * Catalin Olaru / Vlad Spoiala
  */
 #include "utils.h"
-#include "CBLAS/include/cblas.h"
+#include "cblas.h"
 #include <string.h>
 
 /*
@@ -48,8 +48,8 @@ double *multiply_matrix(int N, double *A, double *B) {
 	return aux;
 }
 
-double *power_matrix(int N, double *A) {
-	return multiply_matrix(N, A, A);
+void power_matrix(int N, double *A) {
+	cblas_dtrmm(CblasRowMajor, 'L', 'U', 'N', 'N', N, N, 1, A, N, A, N);
 }
 
 double *add_matrix(int N, double *A, double *B) {
