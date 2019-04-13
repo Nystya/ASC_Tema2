@@ -76,7 +76,7 @@ void zerotr_matrix(int N, double *A) {
 
 	for (i = 0; i < N; i++) {
 		for (j = 0; j < N; j++) {
-			if (j > i) {
+			if (j < i) {
 				A[i * N + j] = 0;
 			}
 		}

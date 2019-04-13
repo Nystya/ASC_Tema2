@@ -169,15 +169,6 @@ void zerotr_matrix(int N, double *A) {
 	}
 }
 
-// void print_matrix(int N, double *A) {
-// 	for (int i = 0; i < N; i++) {
-// 		for (int j = 0; j < N; j++) {
-// 			printf("%lf ", A[i * N + j]);
-// 		}
-// 		printf("\n");
-// 	}
-// }
-
 /* 
  * Add your BLAS implementation here
  */
