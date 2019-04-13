@@ -1,6 +1,6 @@
 CC=gcc
 CFLAGS=-Wall -Werror -O0
-OTHER_C_FLAGS=-Wall -Werror -O2
+OTHER_C_FLAGS=-Wall -Werror -O3
 LIBDIRS=-L/usr/lib64/atlas
 LIBS=-lsatlas
 
