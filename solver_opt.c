@@ -4,6 +4,7 @@
  * Catalin Olaru / Vlad Spoiala
  */
 #include "utils.h"
+#include "/usr/lib/gcc/x86_64-linux-gnu/7/include/immintrin.h"
 #include <string.h>
 
 /*
@@ -72,8 +73,6 @@ double *multiply_matrix(int N, double *A, double *B) {
 
 	double *aux = init_aux(N);
 	if (!aux) return NULL;
-
-	
 
 	for (i = 0; i < N; i += BS) {
 		ipbs = i + BS;
