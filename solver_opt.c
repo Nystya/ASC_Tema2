@@ -4,7 +4,6 @@
  * Catalin Olaru / Vlad Spoiala
  */
 #include "utils.h"
-#include "/usr/lib/gcc/x86_64-linux-gnu/7/include/immintrin.h"
 #include <string.h>
 
 /*
@@ -23,21 +22,6 @@ double *init_aux(int N) {
 
 	return aux;
 }
-
-// void transpose_matrix_inplace(int N, double *A) {
-//     int i, j;
-//     double aux;
-//     int line;
-    
-// 	for (i = 0; i < N - 2; i++) {
-//         line = i * N;
-// 		for (j = i + 1; j < N - 1; j++) {
-//             aux = A[line + j];
-//             A[line + j] = A[j * N + i];
-//             A[j * N + i] = aux;
-// 		}
-// 	}
-// }
 
 double *transpose_matrix(int N, double *A) {
 	int i, j;
