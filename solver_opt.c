@@ -53,15 +53,27 @@ double *transpose_matrix(int N, double *A) {
 }
 
 double *multiply_matrix(int N, double *A, double *B) {
-	int i, j, k, ib, jb, kb;
-	int BS = 40; // block size
+	int i, k, ib;
+
+	// Block size
+	int BS = 40;
+
+	// Most used counters should be kept in registers
+	register int j, jb, kb;
+
+	// To avoid computing j + BS for every comparison
+	register int jpbs;
+
+	// Pointers to matrix values are often used.
 	register double *pa, *pb, *paux;
 	register double *oldpaux;
+
 	double *aux = init_aux(N);
 	if (!aux) return NULL;
 
 	for (i = 0; i < N; i += BS) {
 		for (j = 0; j < N; j += BS) {
+			jpbs = j + BS;
 			for (k = 0; k < N; k += BS) {
 				for (ib = i; ib < i + BS; ib++) {
 					pa = &A[ib * N + k];
@@ -69,7 +81,8 @@ double *multiply_matrix(int N, double *A, double *B) {
 					for (kb = k; kb < k + BS; kb++) {
 						pb = &B[kb * N + j];
 						paux = oldpaux;
-						for (jb = j; jb < j + BS; jb += 10) {
+						for (jb = j; jb < jpbs; jb += 10) {
+							// Unroll the loop for extra thicc power
 							*paux += *pa * *pb;
 							pb++;
 							paux++;
@@ -112,9 +125,15 @@ double *multiply_matrix(int N, double *A, double *B) {
 }
 
 double *power_matrix(int N, double *A) {
-	int i, j, k;
+	int i, k;
+	
+	// Most used counter should be in register
+	register int j;
+
+	// Pointers to matrix values are often used
 	register double *oldpaux;
 	register double *pa, *pb, *paux;
+
 	double *aux = init_aux(N);
 	if (!aux) return NULL;
 	
