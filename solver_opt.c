@@ -63,6 +63,8 @@ double *multiply_matrix(int N, double *A, double *B) {
 
 	// To avoid computing j + BS for every comparison
 	register int jpbs;
+	register int kpbs;
+	int ipbs;
 
 	// Pointers to matrix values are often used.
 	register double *pa, *pb, *paux;
@@ -71,14 +73,18 @@ double *multiply_matrix(int N, double *A, double *B) {
 	double *aux = init_aux(N);
 	if (!aux) return NULL;
 
+	
+
 	for (i = 0; i < N; i += BS) {
+		ipbs = i + BS;
 		for (j = 0; j < N; j += BS) {
 			jpbs = j + BS;
 			for (k = 0; k < N; k += BS) {
-				for (ib = i; ib < i + BS; ib++) {
+				kpbs = k + BS;
+				for (ib = i; ib < ipbs; ib++) {
 					pa = &A[ib * N + k];
 					oldpaux = &aux[ib * N + j];
-					for (kb = k; kb < k + BS; kb++) {
+					for (kb = k; kb < kpbs; kb++) {
 						pb = &B[kb * N + j];
 						paux = oldpaux;
 						for (jb = j; jb < jpbs; jb += 10) {
@@ -130,10 +136,9 @@ double *power_matrix(int N, double *A) {
 	// Most used counter should be in register
 	register int j;
 
-	// Pointers to matrix values are often used
+	// Pointers to matrix values are often
 	register double *oldpaux;
 	register double *pa, *pb, *paux;
-
 	double *aux = init_aux(N);
 	if (!aux) return NULL;
 	
