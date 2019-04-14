@@ -13,6 +13,35 @@
  * zerotr - matrice in care partea de sub diagonala principala este 0
  */
 
+#define compute_value(paux, pa, pb)  \
+{									 \
+	*paux += *pa * *pb; 			 \
+ 	pb++;							 \
+ 	paux++;							 \
+}
+
+#define compute_ten_values(paux, pa, pb) 				 \
+{  							 \
+compute_value(paux, pa, pb); \
+compute_value(paux, pa, pb); \
+compute_value(paux, pa, pb); \
+compute_value(paux, pa, pb); \
+compute_value(paux, pa, pb); \
+compute_value(paux, pa, pb); \
+compute_value(paux, pa, pb); \
+compute_value(paux, pa, pb); \
+compute_value(paux, pa, pb); \
+compute_value(paux, pa, pb); \
+}
+
+#define compute_4ten_values(paux, pa, pb) \
+{			  						 \
+	compute_ten_values(paux, pa, pb); \
+	compute_ten_values(paux, pa, pb); \
+	compute_ten_values(paux, pa, pb); \
+	compute_ten_values(paux, pa, pb); \
+}
+
 double *init_aux(int N) {
 	double *aux = (double *) malloc (N * N * sizeof(double));
 	if (!aux) {
@@ -44,10 +73,9 @@ double *multiply_matrix(int N, double *A, double *B) {
 	int BS = 40;
 
 	// Most used counters should be kept in registers
-	register int j, jb, kb;
+	register int j, kb;
 
 	// To avoid computing j + BS for every comparison
-	register int jpbs;
 	register int kpbs;
 	int ipbs;
 
@@ -61,7 +89,6 @@ double *multiply_matrix(int N, double *A, double *B) {
 	for (i = 0; i < N; i += BS) {
 		ipbs = i + BS;
 		for (j = 0; j < N; j += BS) {
-			jpbs = j + BS;
 			for (k = 0; k < N; k += BS) {
 				kpbs = k + BS;
 				for (ib = i; ib < ipbs; ib++) {
@@ -70,39 +97,10 @@ double *multiply_matrix(int N, double *A, double *B) {
 					for (kb = k; kb < kpbs; kb++) {
 						pb = &B[kb * N + j];
 						paux = oldpaux;
-						for (jb = j; jb < jpbs; jb += 10) {
-							// Unroll the loop for extra thicc power
-							*paux += *pa * *pb;
-							pb++;
-							paux++;
-							*paux += *pa * *pb;
-							pb++;
-							paux++;
-							*paux += *pa * *pb;
-							pb++;
-							paux++;
-							*paux += *pa * *pb;
-							pb++;
-							paux++;
-							*paux += *pa * *pb;
-							pb++;
-							paux++;
-							*paux += *pa * *pb;
-							pb++;
-							paux++;
-							*paux += *pa * *pb;
-							pb++;
-							paux++;
-							*paux += *pa * *pb;
-							pb++;
-							paux++;
-							*paux += *pa * *pb;
-							pb++;
-							paux++;
-							*paux += *pa * *pb;
-							pb++;
-							paux++;
-						}
+						
+						// Unroll the loop for extra thicc power
+						compute_4ten_values(paux, pa, pb);
+
 						pa++;
 					}
 				}
@@ -122,12 +120,14 @@ double *power_matrix(int N, double *A) {
 	// Pointers to matrix values are often
 	register double *oldpaux;
 	register double *pa, *pb, *paux;
-	double *aux = init_aux(N);
+	register double *aux = init_aux(N);
 	if (!aux) return NULL;
 	
 	for (i = 1; i < N; i++) {
+		paux = &aux[i * N];
 		for (j = 0; j < i; j++) {
-			aux[i * N + j] = 0;
+			*paux = 0;
+			paux++;
 		}
 	}
 
@@ -150,9 +150,9 @@ double *power_matrix(int N, double *A) {
 }
 
 double *add_matrix(int N, double *A, double *B) {
-	int i, j;
+	register int i, j;
 
-	double *aux = init_aux(N);
+	register double *aux = init_aux(N);
 	if (!aux) return NULL;
 
 	for (i = 0; i < N; i++) {
