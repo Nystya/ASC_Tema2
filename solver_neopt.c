@@ -44,18 +44,15 @@ double *transpose_matrix(int N, double *A) {
 
 double *multiply_matrix(int N, double *A, double *B) {
 	int i, j, k;
-	double sum = 0;
 
 	double *aux = init_aux(N);
 	if (!aux) return NULL;
 
 	for (i = 0; i < N; i++) {
 		for (j = 0; j < N; j++) {
-			sum = 0;
 			for (k = 0; k < N; k++) {
-				sum += A[i * N + k] * B[k * N + j];
+				aux[i * N + j] += A[i * N + k] * B[k * N + j];
 			}
-			aux[i * N + j] = sum;
 		}
 	}
 
@@ -63,7 +60,25 @@ double *multiply_matrix(int N, double *A, double *B) {
 }
 
 double *power_matrix(int N, double *A) {
-	return multiply_matrix(N, A, A);
+	int i, j, k;
+	double *aux = init_aux(N);
+	if (!aux) return NULL;
+
+	for (i = 1; i < N; i++) {
+		for (j = 0; j < i; j++) {
+			aux[i * N + j] = 0;
+		}
+	}
+
+	for (i = 0; i < N; i++) {
+		for (j = i; j < N; j++) {
+			for (k = 0; k < j + 1; k++) {
+				aux[i * N + j] += A[i * N + k] * A[k * N + j];
+			}
+		}
+	}
+
+	return aux;
 }
 
 double *add_matrix(int N, double *A, double *B) {
@@ -100,10 +115,9 @@ double *my_solver(int N, double *A, double* B) {
 	printf("NEOPT SOLVER\n");
 
 	double *AT = transpose_matrix(N, A);
-	double *BT = transpose_matrix(N, B);
 
 	double *ATB = multiply_matrix(N, AT, B);
-	double *BTA = multiply_matrix(N, BT, A);
+	double *BTA = transpose_matrix(N, ATB);
 
 	double *ATBPBTA = add_matrix(N, ATB, BTA);
 
@@ -112,10 +126,9 @@ double *my_solver(int N, double *A, double* B) {
 	double *C = power_matrix(N, ATBPBTA);
 
 	free(AT);
-	free(BT);
 	free(ATB);
 	free(BTA);
 	free(ATBPBTA);
-	
+
 	return C;
 }
