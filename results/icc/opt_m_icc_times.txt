@@ -1,0 +1,17 @@
+OPT SOLVER
+Run=./tema2_opt_m: Test=1: Time=0.000501
+OPT SOLVER
+Run=./tema2_opt_m: Test=2: Time=0.003513
+OPT SOLVER
+Run=./tema2_opt_m: Test=3: Time=0.048535
+OPT SOLVER
+Run=./tema2_opt_m: Test=4: Time=0.384198
+OPT SOLVER
+Run=./tema2_opt_m: Test=5: Time=3.044429
+OPT SOLVER
+Run=./tema2_opt_m: Test=6: Time=6.027595
+OPT SOLVER
+Run=./tema2_opt_m: Test=7: Time=16.286535
+OPT SOLVER
+Run=./tema2_opt_m: Test=8: Time=24.265646
+<<< Bonus=20p >>>

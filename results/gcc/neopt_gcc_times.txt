@@ -1,0 +1,16 @@
+NEOPT SOLVER
+Run=./tema2_neopt: Test=1: Time=0.000839
+NEOPT SOLVER
+Run=./tema2_neopt: Test=2: Time=0.005828
+NEOPT SOLVER
+Run=./tema2_neopt: Test=3: Time=0.091772
+NEOPT SOLVER
+Run=./tema2_neopt: Test=4: Time=0.792691
+NEOPT SOLVER
+Run=./tema2_neopt: Test=5: Time=6.423496
+NEOPT SOLVER
+Run=./tema2_neopt: Test=6: Time=14.061530
+NEOPT SOLVER
+Run=./tema2_neopt: Test=7: Time=41.347481
+NEOPT SOLVER
+Run=./tema2_neopt: Test=8: Time=71.826584

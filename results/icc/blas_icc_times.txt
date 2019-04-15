@@ -1,0 +1,16 @@
+BLAS SOLVER
+Run=./tema2_blas: Test=1: Time=0.000160
+BLAS SOLVER
+Run=./tema2_blas: Test=2: Time=0.000452
+BLAS SOLVER
+Run=./tema2_blas: Test=3: Time=0.004570
+BLAS SOLVER
+Run=./tema2_blas: Test=4: Time=0.029823
+BLAS SOLVER
+Run=./tema2_blas: Test=5: Time=0.212815
+BLAS SOLVER
+Run=./tema2_blas: Test=6: Time=0.400342
+BLAS SOLVER
+Run=./tema2_blas: Test=7: Time=1.039432
+BLAS SOLVER
+Run=./tema2_blas: Test=8: Time=1.541426
